@@ -1,0 +1,141 @@
+using System;
+using System.Collections.Generic;
+
+namespace SystemUczelni
+{
+    interface IInformacje
+    {
+        string PokazInformacje();
+    }
+
+    abstract class Uczestnik : IInformacje
+    {
+        private string imie;
+        private string nazwisko;
+
+        public static int LiczbaUczestnikow = 0;
+
+        public string Imie
+        {
+            get { return imie; }
+            set { imie = value; }
+        }
+
+        public string Nazwisko
+        {
+            get { return nazwisko; }
+            set { nazwisko = value; }
+        }
+
+        public Uczestnik(string imie, string nazwisko)
+        {
+            this.imie = imie;
+            this.nazwisko = nazwisko;
+            LiczbaUczestnikow++;
+        }
+
+        public abstract string PokazInformacje();
+
+        public virtual void WyswietlRole()
+        {
+            Console.WriteLine($"Uczestnik: {Imie} {Nazwisko}.");
+        }
+
+        public static void PokazLiczbeUczestnikow()
+        {
+            Console.WriteLine($"Liczba uczestników w systemie: {LiczbaUczestnikow}");
+        }
+    }
+
+    class Sluchacz : Uczestnik
+    {
+        public int NumerAlbumu { get; set; }
+
+        public Sluchacz(string imie, string nazwisko, int numerAlbumu)
+            : base(imie, nazwisko)
+        {
+            NumerAlbumu = numerAlbumu;
+        }
+
+        public override string PokazInformacje()
+        {
+            return $"Słuchacz: {Imie} {Nazwisko}, numer albumu: {NumerAlbumu}";
+        }
+
+        public override void WyswietlRole()
+        {
+            Console.WriteLine($"Jestem słuchaczem. Mam na imię {Imie}, mój numer albumu to {NumerAlbumu}.");
+        }
+    }
+
+    class Prowadzacy : Uczestnik
+    {
+        public string NazwaKursu { get; set; }
+
+        public Prowadzacy(string imie, string nazwisko, string nazwaKursu)
+            : base(imie, nazwisko)
+        {
+            NazwaKursu = nazwaKursu;
+        }
+
+        public override string PokazInformacje()
+        {
+            return $"Prowadzący: {Imie} {Nazwisko}, kurs: {NazwaKursu}";
+        }
+
+        public override void WyswietlRole()
+        {
+            Console.WriteLine($"Jestem prowadzącym kursu: {NazwaKursu}.");
+        }
+    }
+
+    class ListaUczestnikow
+    {
+        private List<Uczestnik> uczestnicy = new List<Uczestnik>();
+
+        public void DodajUczestnika(Uczestnik uczestnik)
+        {
+            uczestnicy.Add(uczestnik);
+        }
+
+        public Uczestnik this[int index]
+        {
+            get { return uczestnicy[index]; }
+            set { uczestnicy[index] = value; }
+        }
+
+        public int LiczbaElementow
+        {
+            get { return uczestnicy.Count; }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ListaUczestnikow lista = new ListaUczestnikow();
+
+            Sluchacz osoba1 = new Sluchacz("Jan", "Kowalski", 12345);
+            Sluchacz osoba2 = new Sluchacz("Anna", "Nowak", 67890);
+            Prowadzacy osoba3 = new Prowadzacy("Adam", "Wiśniewski", "Podstawy programowania");
+
+            lista.DodajUczestnika(osoba1);
+            lista.DodajUczestnika(osoba2);
+            lista.DodajUczestnika(osoba3);
+
+            for (int i = 0; i < lista.LiczbaElementow; i++)
+            {
+                Uczestnik uczestnik = lista[i];
+
+                uczestnik.WyswietlRole();
+                Console.WriteLine(uczestnik.PokazInformacje());
+                Console.WriteLine();
+            }
+
+            Uczestnik.PokazLiczbeUczestnikow();
+
+            Console.ReadKey();
+        }
+    }
+}
