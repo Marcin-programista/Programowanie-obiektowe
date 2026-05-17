@@ -1,0 +1,72 @@
+using System;
+
+namespace SystemUczelni
+{
+    class Uczestnik
+    {
+        public string Imie { get; set; }
+        public string Nazwisko { get; set; }
+
+        public Uczestnik(string imie, string nazwisko)
+        {
+            Imie = imie;
+            Nazwisko = nazwisko;
+        }
+
+        public virtual void PokazInformacje()
+        {
+            Console.WriteLine($"Uczestnik: {Imie} {Nazwisko}");
+        }
+    }
+
+    class Sluchacz : Uczestnik
+    {
+        public int NumerAlbumu { get; set; }
+
+        public Sluchacz(string imie, string nazwisko, int numerAlbumu)
+            : base(imie, nazwisko)
+        {
+            NumerAlbumu = numerAlbumu;
+        }
+
+        public override void PokazInformacje()
+        {
+            Console.WriteLine($"Słuchacz: {Imie} {Nazwisko}, numer albumu: {NumerAlbumu}");
+        }
+    }
+
+    class Prowadzacy : Uczestnik
+    {
+        public string Kurs { get; set; }
+
+        public Prowadzacy(string imie, string nazwisko, string kurs)
+            : base(imie, nazwisko)
+        {
+            Kurs = kurs;
+        }
+
+        public override void PokazInformacje()
+        {
+            Console.WriteLine($"Prowadzący: {Imie} {Nazwisko}, kurs: {Kurs}");
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Uczestnik[] osoby =
+            {
+                new Sluchacz("Jan", "Kowalski", 12345),
+                new Prowadzacy("Adam", "Wiśniewski", "Podstawy programowania")
+            };
+
+            foreach (Uczestnik osoba in osoby)
+            {
+                osoba.PokazInformacje();
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
